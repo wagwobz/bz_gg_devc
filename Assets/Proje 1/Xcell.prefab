@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 6210916793362550709}
   - component: {fileID: 6210916793362550708}
   - component: {fileID: 6210916793362550712}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Xcell
   m_TagString: Untagged
   m_Icon: {fileID: 0}

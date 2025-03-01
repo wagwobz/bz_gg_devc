@@ -22,6 +22,7 @@ namespace Proje_1
             CreateCells(size, _startPos);
         }
 
+        [ContextMenu("Clear Grid")]
         void DestroyCells() {
             for (int i = 0; i < cells.Count; i++) {
                 DestroyImmediate(cells[i].gameObject);
@@ -31,8 +32,8 @@ namespace Proje_1
 
         void CreateCells(int gridSize, Vector3 startingPos) {
             for (int i = 0; i < gridSize * gridSize; i++) {
-                var x = i % 5;
-                var z = i / 5;
+                var x = i % gridSize;
+                var z = i / gridSize;
                 var pos = startingPos + new Vector3(x, 0, z);
                 var cell = Instantiate(cellPrefab, pos, Quaternion.identity, transform);
                 cell.gameObject.name = "Cell" + i;
