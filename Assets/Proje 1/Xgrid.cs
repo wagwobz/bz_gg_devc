@@ -23,7 +23,7 @@ namespace Proje_1
         }
 
         [ContextMenu("Clear Grid")]
-        void DestroyCells() {
+        public void DestroyCells() {
             for (int i = 0; i < cells.Count; i++) {
                 DestroyImmediate(cells[i].gameObject);
             }
