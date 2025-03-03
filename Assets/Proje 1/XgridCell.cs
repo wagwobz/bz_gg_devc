@@ -6,6 +6,15 @@ namespace Proje_1
     {
         public bool markedX = false;
         [SerializeField] GameObject xGameObject;
+        public int x;
+        public int y;
+        public int index;
+
+        public void SetCoordinates(int x, int y, int index) {
+            this.x = x;
+            this.y = y;
+            this.index = index;
+        }
 
         [ContextMenu("Mark X")]
         public void MarkX() {

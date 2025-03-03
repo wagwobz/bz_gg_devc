@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Proje_1
 {
@@ -7,6 +8,12 @@ namespace Proje_1
     {
         [SerializeField] LayerMask layerMask;
         Camera _camera;
+
+        Xgrid _xGrid;
+        [Inject]
+        void Construct(Xgrid xgrid) {
+            _xGrid = xgrid;
+        }
 
         void Awake() {
             _camera = Camera.main;
@@ -17,7 +24,7 @@ namespace Proje_1
             if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) return;
             if (hit.collider.TryGetComponent(out XgridCell cell)) {
                 cell.MarkX();
-                //call check here or call check in MarkX()
+                _xGrid.ControlMatch(cell.index);
             }
         }
 
