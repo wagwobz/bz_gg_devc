@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -22,18 +23,23 @@ namespace Proje_1
             _gameManager = gameManager;
         }
 
+        void Start() {
+            ReCalculateGrid();
+        }
+
         [ContextMenu("Create Grid")]
         public void ReCalculateGrid() {
             DestroyCells();
             _startingPosValue = size / 2f - 0.5f;
             _startPos = new Vector3(-_startingPosValue, 0, -_startingPosValue);
             CreateCells(size, _startPos);
+            Camera.main.orthographicSize = size;
         }
 
         [ContextMenu("Clear Grid")]
         public void DestroyCells() {
             for (int i = 0; i < cells.Count; i++) {
-                DestroyImmediate(cells[i].gameObject);
+                if (cells[i]) DestroyImmediate(cells[i].gameObject);
             }
 
             cells.Clear();
@@ -46,7 +52,7 @@ namespace Proje_1
                 var pos = startingPos + new Vector3(x, 0, z);
                 var cell = Instantiate(cellPrefab, pos, Quaternion.identity, transform);
                 cell.gameObject.name = "Cell" + i;
-                cell.SetCoordinates(x, z,i);
+                cell.SetCoordinates(x, z, i);
                 cells.Add(cell);
             }
         }
@@ -56,7 +62,7 @@ namespace Proje_1
             var y = index / size;
 
             var matchedCells = new List<XgridCell>();
-            var currentCell = GetCellByPosition(x,y);
+            var currentCell = GetCellByPosition(x, y);
             matchedCells.Add(currentCell);
             var markedAdj = ControlAll(x, y);
 
@@ -67,12 +73,13 @@ namespace Proje_1
                     var nextMarked = ControlAll(markedAdj[i].x, markedAdj[i].y);
                     if (nextMarked.Count > 0) {
                         for (int j = 0; j < nextMarked.Count; j++) {
-                            if(!matchedCells.Contains(nextMarked[j])) matchedCells.Add(nextMarked[j]);
+                            if (!matchedCells.Contains(nextMarked[j])) matchedCells.Add(nextMarked[j]);
                             var secondNextMarked = ControlAll(nextMarked[j].x, nextMarked[j].y);
                         }
                     }
                 }
             }
+
             if (matchedCells.Count > 2) {
                 Debug.Log($"Matched {matchedCells.Count}");
                 _gameManager.Matched();
@@ -90,20 +97,21 @@ namespace Proje_1
                     return (true, cell);
                 }
             }
+
             return (false, null);
         }
 
-        List<XgridCell> ControlAll(int x,int y) {
+        List<XgridCell> ControlAll(int x, int y) {
             var right = ControlPosition(x + 1, y);
             var left = ControlPosition(x - 1, y);
             var up = ControlPosition(x, y + 1);
             var down = ControlPosition(x, y - 1);
 
             var asd = new List<XgridCell>();
-            if(right.Item1) asd.Add(right.Item2);
-            if(left.Item1) asd.Add(left.Item2);
-            if(up.Item1) asd.Add(up.Item2);
-            if(down.Item1) asd.Add(down.Item2);
+            if (right.Item1) asd.Add(right.Item2);
+            if (left.Item1) asd.Add(left.Item2);
+            if (up.Item1) asd.Add(up.Item2);
+            if (down.Item1) asd.Add(down.Item2);
 
             return asd;
         }
