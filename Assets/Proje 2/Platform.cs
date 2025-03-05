@@ -16,9 +16,6 @@ namespace Proje_2
             _stopped = false;
             startingSide = currentSide;
         }
-        void Start() {
-            print(transform.localPosition);
-        }
         
         void Update() {
             if (!_moving && !_stopped && !startPlatform) {
